@@ -2,10 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
 
+
+
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const passport = require('passport');
+app.use(passport.initialize({ session: false }));
 
 app.use(express.json());
 
@@ -20,6 +25,9 @@ const options = {
   }
 }
 app.use(cors(options));
+
+require('./utils/auth')
+
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
